@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router';
 
-import { useFetch } from '../hooks/useFetch';
+import { useAuth } from '../hooks/useAuth';
 
 import { getMovieImg } from '../utils/getMovieImg';
+import apiMovies from '../utils/apiMovies';
 
 import { Spinner } from '../components/Spinner';
+import AddToList from '../components/AddToList';
 
 // Types
 import { Movie } from '../interface/ApiMovies';
@@ -14,10 +16,12 @@ import { Movie } from '../interface/ApiMovies';
 import styles from './styles/MovieDetails.module.css';
 
 export function MovieDetails() {
+	const { isAuth } = useAuth();
+
 	const { movieId } = useParams();
 	const [movie, setMovie] = useState<Movie>();
 
-	const fetchState = useFetch<Movie>({ api: 'API_MOVIES', endpoint: '/movie/' + movieId });
+	const fetchState = apiMovies<Movie>('/movie/' + movieId);
 
 	useEffect(() => {
 		setMovie(fetchState.data as Movie);
@@ -46,13 +50,14 @@ export function MovieDetails() {
 					<p>
 						<strong>Description:</strong> {movie.overview}
 					</p>
+					{isAuth && <AddToList idMovie={movie.id as number} />}
 				</div>
 			</main>
 		);
 	} else {
 		return (
 			<main>
-				<p>No se pudo cargar la pagina</p>
+				<p className='text-center my-auto'>No se pudo cargar la pagina</p>
 			</main>
 		);
 	}

@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
-import { useFetch } from '../../hooks/useFetch';
-
 import { Spinner } from '../Spinner';
 import { Empty } from '../Empty';
 import { MovieCard } from '../MovieCard';
@@ -13,15 +11,16 @@ import { Movie, MoviesData } from '../../interface/ApiMovies';
 // Css
 import styles from './MoviesGrid.module.css';
 
+import apiMovies from '../../utils/apiMovies';
+
 export function MoviesGrid({ search }: { search: string }) {
 	const [page, setPage] = useState(1);
 	const [hasMore, setHasMore] = useState(true);
 	const [movies, setMovies] = useState<Movie[]>([]);
 
-	const fetchState = useFetch<MoviesData>({
-		api: 'API_MOVIES',
-		endpoint: search ? `/search/movie?query=${search}&page=${page}` : `/discover/movie?page=${page}`,
-	});
+	const fetchState = apiMovies<MoviesData>(
+		search ? `/search/movie?query=${search}&page=${page}` : `/discover/movie?page=${page}`
+	);
 
 	useEffect(() => {
 		if (fetchState.state === 'success' && !!fetchState.data) {

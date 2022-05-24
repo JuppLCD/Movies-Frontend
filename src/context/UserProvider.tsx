@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { KEY_LOCAL_STORAGE } from '../config';
+import { ENDPOINTS, KEY_LOCAL_STORAGE } from '../config';
 
-import { DataErrorBackend, FormDataUser } from '../interface/ApiBackend';
+import { DataErrorBackend, FormDataUser, UserLists } from '../interface/ApiBackend';
 
 import { fetchFormData } from '../utils/fetchFormData';
+import fetchList from '../utils/fetchList';
 import { fetchValidToken } from '../utils/fetchValidToken';
 
 import { UserContext } from './UserContext';
@@ -16,6 +17,8 @@ type Props = {
 
 const UserProvider = ({ children }: Props) => {
 	const [isAuth, setIsAuth] = useState(false);
+	const [listsUser, setListsUser] = useState<UserLists | null>(null);
+
 	const navegate = useNavigate();
 
 	useEffect(() => {
@@ -35,6 +38,20 @@ const UserProvider = ({ children }: Props) => {
 			}
 		})();
 	}, []);
+
+	useEffect(() => {
+		if (isAuth) {
+			// TODO: Buscar en el backend las listas del usuario con sus respectivos ids
+			(async () => {
+				const listsUser = await fetchList<UserLists>(ENDPOINTS.listsUser);
+				if ((listsUser as UserLists)?.name) {
+					setListsUser(listsUser as UserLists);
+				} else if ((listsUser as DataErrorBackend)?.error) {
+					console.error((listsUser as DataErrorBackend)?.error);
+				}
+			})();
+		}
+	}, [isAuth]);
 
 	const logout = () => {
 		localStorage.removeItem(KEY_LOCAL_STORAGE);
@@ -64,7 +81,7 @@ const UserProvider = ({ children }: Props) => {
 		}
 	};
 
-	return <UserContext.Provider value={{ isAuth, logout, signin, signup }}>{children}</UserContext.Provider>;
+	return <UserContext.Provider value={{ isAuth, listsUser, logout, signin, signup }}>{children}</UserContext.Provider>;
 };
 
 export default UserProvider;

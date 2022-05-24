@@ -1,13 +1,13 @@
-import { useFetch } from '../hooks/useFetch';
-
 import { ENDPOINTS } from '../config/index';
 
 import { Spinner } from '../components/Spinner';
 
 import { UserInfo } from '../interface/ApiBackend';
 
+import apiBackend from '../utils/apiBackend';
+
 const ProfilePage = () => {
-	const fetchState = useFetch<UserInfo>({ api: 'API_BACKEND', endpoint: ENDPOINTS.info });
+	const fetchState = apiBackend<UserInfo>(ENDPOINTS.info);
 
 	if (fetchState.data === null || fetchState.state === 'loading') {
 		return <Spinner />;
@@ -17,9 +17,14 @@ const ProfilePage = () => {
 		return <p>{fetchState.error?.message}</p>;
 	}
 	return (
-		<div>
+		<main>
 			ProfilePage <div>{fetchState.data.name}</div>
-		</div>
+			{fetchState.data.lists.map((lists) => (
+				<div>
+					list - {lists.name} - movies : [ {lists.movies.join(' | ')} ]
+				</div>
+			))}
+		</main>
 	);
 };
 

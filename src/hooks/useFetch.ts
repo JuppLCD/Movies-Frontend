@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react';
 
-import { API_BACKEND, API_MOVIES, KEY_API_MOVIES, KEY_LOCAL_STORAGE } from '../config';
+import { OptionsFetch } from '../interface/useFetchTypes';
 
 type Props = {
 	endpoint: string;
-	api: 'API_BACKEND' | 'API_MOVIES';
+	uri: string;
 	errMenssage?: string;
+	options: OptionsFetch;
 };
 
 type useFetchState<T> = {
@@ -14,7 +15,17 @@ type useFetchState<T> = {
 	error: null | Error;
 };
 
-const useFetch = <T>({ endpoint, api, errMenssage = 'Ocurrio un error al trar datos' }: Props) => {
+const useFetch = <T>({
+	endpoint,
+	uri,
+	errMenssage = 'Ocurrio un error al trar datos',
+	options = {
+		method: 'GET',
+		headers: {
+			Authorization: 'authorization',
+		},
+	},
+}: Props) => {
 	const [fetchState, setfetchState] = useState<useFetchState<T>>({ state: 'idle', data: null, error: null });
 
 	useEffect(() => {
@@ -22,35 +33,22 @@ const useFetch = <T>({ endpoint, api, errMenssage = 'Ocurrio un error al trar da
 		const FetchData = async () => {
 			setfetchState((prevState) => ({ ...prevState, state: 'loading' }));
 			try {
-				// TODO Pensar como implementar en las opciones del fetch otros metodos http
-				let uri: string;
-				let headersAPI: any;
-				if (api === 'API_BACKEND') {
-					const localToken = window.localStorage.getItem(KEY_LOCAL_STORAGE);
-					if (localToken === null) {
-						throw setfetchState({
-							state: 'error',
-							data: null,
-							error: new Error('No hay token, ruta restringida'),
-						});
-					}
-					uri = API_BACKEND + endpoint;
-					headersAPI = { Authorization: localToken };
-				} else {
-					uri = API_MOVIES + endpoint;
-					headersAPI = {
-						Authorization: KEY_API_MOVIES,
-						'Content-Type': 'application/json;charset=utf-8',
-					};
-				}
-
-				const res = await window.fetch(uri, { method: 'GET', headers: headersAPI });
+				const res = await window.fetch(uri, options);
 				if (!res.ok) {
 					throw setfetchState({
 						state: 'error',
 						data: null,
 						error: new Error(errMenssage),
 					});
+				}
+
+				if (res.status === 204 && isMounted) {
+					setfetchState({
+						state: 'success',
+						data: null,
+						error: null,
+					});
+					return;
 				}
 
 				const data = await res.json();

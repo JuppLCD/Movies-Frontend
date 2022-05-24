@@ -3,9 +3,9 @@ import { Link } from 'react-router-dom';
 
 // Hooks
 import { useFormAuth } from '../../hooks/useFormAuth';
-import { FormLoginSchema } from '../../utils/schema/FormLoginSchema';
 
 // Shema Validation
+import { FormLoginSchema } from '../../utils/schema/FormLoginSchema';
 import { FormRegisterSchema } from '../../utils/schema/FormRegisterSchema';
 
 import styles from './FormUser.module.css';
