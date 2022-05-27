@@ -3,7 +3,6 @@
 	font-size: 1.3rem;
 	text-align: center;
 	position: relative;
-	margin-bottom: 50px;
 
 	transition: transform ease 0.6s;
 	-webkit-transition: transform ease 0.6s;
@@ -61,6 +60,7 @@
 		-moz-transition: transform ease 0.6s;
 		-ms-transition: transform ease 0.6s;
 		-o-transition: transform ease 0.6s;
+		z-index: 1;
 	}
 	.movieInfo:hover {
 		opacity: 1;

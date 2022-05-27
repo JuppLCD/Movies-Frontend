@@ -66,6 +66,7 @@ export function MovieDetails() {
 							idMovie={movie.id as number}
 							notificationToaster={notificationToaster}
 							openModalCreateList={openModalCreateList}
+							drop='up'
 						/>
 					)}
 				</div>

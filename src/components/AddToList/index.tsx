@@ -10,15 +10,17 @@ import { DataErrorBackend } from '../../interface/ApiBackend';
 import fetchList from '../../utils/fetchList';
 import { insertListIdEndpoint } from '../../utils/insertListIdEndpoint';
 
+import styles from './AddtoList.module.css';
+
 type Props = {
 	idMovie: string | number;
 	openModalCreateList: (idMovie: string | number) => void;
 	notificationToaster: (msg: string, type: 'success' | 'error') => void;
+	drop?: 'up' | 'start' | 'end' | 'down';
 };
 
-const AddToList = ({ idMovie, openModalCreateList, notificationToaster }: Props) => {
+const AddToList = ({ idMovie, openModalCreateList, notificationToaster, drop = 'down' }: Props) => {
 	const { listsUser } = useAuth();
-	// TODO: Colocar z-index Dropdown.Menu para estar por ensima de las imagenes
 
 	function stopPropagation(
 		e: React.MouseEvent<HTMLButtonElement>,
@@ -80,16 +82,23 @@ const AddToList = ({ idMovie, openModalCreateList, notificationToaster }: Props)
 				<FaHeart className='text-ligth' size={20} />
 			</Button>
 
-			<Dropdown onClick={(e: React.MouseEvent<HTMLButtonElement>) => stopPropagation(e, addToList)} title='Add to list'>
+			<Dropdown
+				onClick={(e: React.MouseEvent<HTMLButtonElement>) => stopPropagation(e, addToList)}
+				title='Add to list'
+				drop={drop}
+			>
 				<Dropdown.Toggle variant='success' id='dropdown-basic'>
 					<FaList className='text-ligth' size={20} />
 				</Dropdown.Toggle>
-				<Dropdown.Menu>
-					<Dropdown.Item data-list-create='Create_List'>Create List</Dropdown.Item>
+				<Dropdown.Menu className={styles.DropdownMenu}>
+					<Dropdown.Item data-list-create='Create_List' as={Button}>
+						Create List
+					</Dropdown.Item>
+					<Dropdown.Divider />
 					{lists.length !== 0 && (
 						<>
 							{lists.map((list) => (
-								<Dropdown.Item key={list.id} data-list-button={list.name} data-list-id={list.id}>
+								<Dropdown.Item as={Button} key={list.id} data-list-button={list.name} data-list-id={list.id}>
 									{list.name}
 								</Dropdown.Item>
 							))}

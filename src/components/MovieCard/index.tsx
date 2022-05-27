@@ -23,26 +23,27 @@ export function MovieCard({ movie, notificationToaster, openModalCreateList }: P
 
 	return (
 		<li className={styles.movieCard}>
-			<Link to={'/movies/' + movie.id} className={styles.imgBox}>
-				<img width={230} height={345} className={styles.movieImage} src={imageUrl} alt={movie.title} />
+			<Link to={'/movies/' + movie.id}>
+				<div className={styles.imgBox}>
+					<img width={230} height={345} className={styles.movieImage} src={imageUrl} alt={movie.title} />
+				</div>
+
+				<div className={styles.movieInfo}>
+					<p>
+						<span className={styles.movieDescription}>Description: </span>
+						<br /> <br /> {movie.overview.length <= 120 ? movie.overview : movie.overview.slice(0, 120) + '...'}
+					</p>
+					<p className='text-primary fs-5 fw-bolder text-decoration-underline'>More info</p>
+
+					{isAuth && (
+						<AddToList
+							idMovie={movie.id as number}
+							notificationToaster={notificationToaster}
+							openModalCreateList={openModalCreateList}
+						/>
+					)}
+				</div>
 			</Link>
-			<div className={styles.movieInfo}>
-				<p>
-					<span className={styles.movieDescription}>Description: </span>
-					<br /> <br /> {movie.overview.length <= 120 ? movie.overview : movie.overview.slice(0, 120) + '...'}
-				</p>
-				{/* <p className='text-primary fs-5 fw-bolder text-decoration-underline'>More info</p> */}
-				<Link to={'/movies/' + movie.id} className='text-primary fs-5 fw-bolder text-decoration-underline'>
-					More info
-				</Link>
-				{isAuth && (
-					<AddToList
-						idMovie={movie.id as number}
-						notificationToaster={notificationToaster}
-						openModalCreateList={openModalCreateList}
-					/>
-				)}
-			</div>
 			<div>{movie.title}</div>
 		</li>
 	);

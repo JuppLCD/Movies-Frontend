@@ -18,7 +18,7 @@ Esta App fue hecha con la finalidad de aprender y comprender mas sobre la creaci
 
 [x] Añadir pelicula de una lista desde la pagina home.
 
-[ ] Crear lista, Modal
+[x] Crear lista, Modal
 
 [ ] Pagina usuario.
 
