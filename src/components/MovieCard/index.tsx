@@ -11,7 +11,13 @@ import { Movie } from '../../interface/ApiMovies';
 // Css
 import styles from './MovieCard.module.css';
 
-export function MovieCard({ movie }: { movie: Movie }) {
+type Props = {
+	movie: Movie;
+	notificationToaster: (msg: string, type: 'success' | 'error') => void;
+	openModalCreateList: (idMovie: string | number) => void;
+};
+
+export function MovieCard({ movie, notificationToaster, openModalCreateList }: Props) {
 	const { isAuth } = useAuth();
 	const imageUrl = getMovieImg(movie.poster_path, 300);
 
@@ -29,7 +35,13 @@ export function MovieCard({ movie }: { movie: Movie }) {
 				<Link to={'/movies/' + movie.id} className='text-primary fs-5 fw-bolder text-decoration-underline'>
 					More info
 				</Link>
-				{isAuth && <AddToList idMovie={movie.id as number} />}
+				{isAuth && (
+					<AddToList
+						idMovie={movie.id as number}
+						notificationToaster={notificationToaster}
+						openModalCreateList={openModalCreateList}
+					/>
+				)}
 			</div>
 			<div>{movie.title}</div>
 		</li>

@@ -4,6 +4,7 @@ import { DataErrorBackend, FormDataUser, UserLists } from '../interface/ApiBacke
 interface UserToken {
 	isAuth: boolean;
 	listsUser: UserLists | null;
+	listUserModificate: () => void;
 	logout: () => void;
 	signin: (formDataUser: FormDataUser) => Promise<null | DataErrorBackend>;
 	signup: (formDataUser: FormDataUser) => Promise<null | DataErrorBackend>;

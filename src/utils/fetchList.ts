@@ -15,13 +15,13 @@ export default async function fetchList<TypeData>(endpoint: string, body?: { nam
 		headers: { Authorization: localToken },
 	};
 
-	if (endpoint.includes('/list/create') || endpoint.includes('/list/update')) {
+	if (endpoint.includes('list/create') || endpoint.includes('list/update')) {
 		options.headers['Content-Type'] = 'application/json';
 		options.body = JSON.stringify(body);
 	}
 
 	switch (true) {
-		case endpoint.includes('list/create'): {
+		case endpoint.includes('list/create') || endpoint.includes('movies/add'): {
 			options.method = 'POST';
 			break;
 		}
@@ -29,21 +29,24 @@ export default async function fetchList<TypeData>(endpoint: string, body?: { nam
 			options.method = 'PUT';
 			break;
 		}
-		case endpoint.includes('list/delete'): {
+		case endpoint.includes('list/delete') || endpoint.includes('movies/remove'): {
 			options.method = 'DELETE';
 			break;
 		}
 	}
+	try {
+		const res = await fetch(uri, options);
 
-	const res = await fetch(uri, options);
-
-	if (!res.ok) {
-		const error: DataErrorBackend = await res.json();
-		return error;
+		if (!res.ok) {
+			const error: DataErrorBackend = await res.json();
+			return error;
+		}
+		if (res.status === 204) {
+			return { ok: true };
+		}
+		const data: TypeData = await res.json();
+		return data;
+	} catch (err) {
+		console.error('Error al realizar la peticion al backend - Listas');
 	}
-	if (res.status === 204) {
-		return { ok: true };
-	}
-	const data: TypeData = await res.json();
-	return data;
 }

@@ -11,7 +11,7 @@ const Header = () => {
 	return (
 		<header>
 			<Navbar bg='dark' variant='dark' expand='md'>
-				<Container>
+				<Container fluid='md'>
 					<Navbar.Brand as={Link} to='/'>
 						<h1 className={styles.title}>Movies</h1>
 					</Navbar.Brand>

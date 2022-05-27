@@ -17,6 +17,7 @@ type Props = {
 
 const UserProvider = ({ children }: Props) => {
 	const [isAuth, setIsAuth] = useState(false);
+	const [modificateLists, setModificateLists] = useState(false);
 	const [listsUser, setListsUser] = useState<UserLists | null>(null);
 
 	const navegate = useNavigate();
@@ -51,7 +52,7 @@ const UserProvider = ({ children }: Props) => {
 				}
 			})();
 		}
-	}, [isAuth]);
+	}, [isAuth, modificateLists]);
 
 	const logout = () => {
 		localStorage.removeItem(KEY_LOCAL_STORAGE);
@@ -81,7 +82,13 @@ const UserProvider = ({ children }: Props) => {
 		}
 	};
 
-	return <UserContext.Provider value={{ isAuth, listsUser, logout, signin, signup }}>{children}</UserContext.Provider>;
+	const listUserModificate = () => setModificateLists(!modificateLists);
+
+	return (
+		<UserContext.Provider value={{ isAuth, listsUser, listUserModificate, logout, signin, signup }}>
+			{children}
+		</UserContext.Provider>
+	);
 };
 
 export default UserProvider;

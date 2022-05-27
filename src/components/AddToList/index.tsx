@@ -10,11 +10,15 @@ import { DataErrorBackend } from '../../interface/ApiBackend';
 import fetchList from '../../utils/fetchList';
 import { insertListIdEndpoint } from '../../utils/insertListIdEndpoint';
 
-const AddToList = ({ idMovie }: { idMovie: string | number }) => {
-	// TODO En caso de que exista un usuario tengo que buscar las listas del mismo para luego agregalas en el Dropdown de 'Add to List'
+type Props = {
+	idMovie: string | number;
+	openModalCreateList: (idMovie: string | number) => void;
+	notificationToaster: (msg: string, type: 'success' | 'error') => void;
+};
 
-	// ! Me tengo que traer las listas del usuario desde el provider con el hoock useAuth, de lo contrario tendria que hacer una peticion http por cada pelicula que se renderice
+const AddToList = ({ idMovie, openModalCreateList, notificationToaster }: Props) => {
 	const { listsUser } = useAuth();
+	// TODO: Colocar z-index Dropdown.Menu para estar por ensima de las imagenes
 
 	function stopPropagation(
 		e: React.MouseEvent<HTMLButtonElement>,
@@ -44,20 +48,19 @@ const AddToList = ({ idMovie }: { idMovie: string | number }) => {
 		}
 
 		if (isButtonCreateList) {
-			// TODO Crear un modal en el cual coloque el nombre de la nueva lista y al crearla tambien se tiene que guardar la pelicula seleccionada
+			openModalCreateList(idMovie);
 		}
 
 		if (nameList && listId) {
+			// * ESTE CODIGO SE REPITE EN EL COMPONENTE ModelCreateList, EL CUAL ES PARA AGREGAR UNA PELICULA A UNA LISTA
 			const data = await fetchList<null | DataErrorBackend>(
 				insertListIdEndpoint(ENDPOINTS.addMovieFromList, listId) + String(idMovie)
 			);
 
 			if (!!(data as { ok: boolean })?.ok) {
-				// TODO Notificacion de que se agrego correctamente la pelicula a la lista
-				console.log('Se agrego correctamente');
+				notificationToaster('Se agrego correctamente', 'success');
 			} else if (!!(data as DataErrorBackend)?.error) {
-				// TODO Notificacion de que no se agrego la pelicula a la lista
-				console.log('Ocurrio un error al intentar agregar la pelicula a la lista');
+				notificationToaster('No se pudo agregar la pelicula a la lista', 'error');
 			}
 		}
 	}

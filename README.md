@@ -12,14 +12,16 @@ Esta App fue hecha con la finalidad de aprender y comprender mas sobre la creaci
 
 [x] Crear una barra de navegacion en el header.
 
-[x] Crear e iniciar secion en usuarios.
-
 [x] Crear API REST de usuario con Node JS, utilizando express y mysql como DB.
 
-[ ] Añadir o quitar pelicula de una lista desde la pagina home.
+[x] Crear e iniciar secion en usuarios.
+
+[x] Añadir pelicula de una lista desde la pagina home.
+
+[ ] Crear lista, Modal
 
 [ ] Pagina usuario.
 
 [ ] Pagina lista de peliculas.
 
-[ ] Añadir o quitar pelicula de una lista desde la pagina de detalles.
+[x] Añadir pelicula de una lista desde la pagina de detalles.
