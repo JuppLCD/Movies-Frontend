@@ -18,7 +18,7 @@ import { Movie } from '../interface/ApiMovies';
 // Css
 import styles from './styles/MovieDetails.module.css';
 
-export function MovieDetails() {
+export default function MovieDetails() {
 	const [movie, setMovie] = useState<Movie>();
 	const { show, handleClose, handleShow } = useModal();
 	const { isAuth } = useAuth();

@@ -1,19 +1,27 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { MovieDetails } from './MovieDetails';
-import { LandingPage } from './LandingPage';
 
+import MovieDetails from './MovieDetails';
+import LandingPage from './LandingPage';
 import UserPage from './UserPage';
 import FormUser from '../components/FormUser';
 import ProfilePage from './ProfilePage';
 
 import PrivateRoute from '../components/PrivateRoute';
 import PublicRoute from '../components/PublicRoute';
+import ListPage from './ListPage';
 
 const Pages = () => {
 	return (
 		<Routes>
 			<Route path='/movies/:movieId' element={<MovieDetails />} />
-
+			<Route
+				path='/list/:listId'
+				element={
+					<PrivateRoute>
+						<ListPage />
+					</PrivateRoute>
+				}
+			/>
 			<Route
 				path='/profile'
 				element={

@@ -11,3 +11,17 @@ export interface MoviesData {
 	results: Movie[];
 	total_pages: number;
 }
+
+export interface APIMovieImage {
+	id: number;
+	backdrops: {
+		file_path: string;
+		height: number;
+		width: number;
+	}[];
+	posters: {
+		file_path: string;
+		height: number;
+		width: number;
+	}[];
+}

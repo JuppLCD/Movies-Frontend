@@ -20,8 +20,8 @@ Esta App fue hecha con la finalidad de aprender y comprender mas sobre la creaci
 
 [x] Crear lista, Modal
 
-[ ] Pagina usuario.
+[x] Añadir pelicula de una lista desde la pagina de detalles.
+
+[x] Pagina usuario.
 
 [ ] Pagina lista de peliculas.
-
-[x] Añadir pelicula de una lista desde la pagina de detalles.

@@ -9,11 +9,12 @@ export interface ErrorFormDataUser {
 	FormError: string;
 }
 
-export interface UserInfo {
+export interface UserMoviesList {
 	name: string;
 	lists: [
 		{
 			name: string;
+			id: string;
 			movies: [number];
 		}
 	];
