@@ -9,8 +9,6 @@ import { UserMoviesList } from '../interface/ApiBackend';
 
 import apiBackend from '../utils/apiBackend';
 
-import styles from './styles/ProfilePage.module.css';
-
 const ProfilePage = () => {
 	const fetchState = apiBackend<UserMoviesList>(ENDPOINTS.info);
 
@@ -24,8 +22,8 @@ const ProfilePage = () => {
 	return (
 		<main>
 			<Container fluid='md'>
-				ProfilePage <div>{fetchState.data.name}</div>
-				<ul className={styles.listGrid}>
+				<h1>{fetchState.data.name}</h1>
+				<ul className='moviesGrid'>
 					{fetchState.data.lists.map((list) => (
 						<ListMovie key={list.id} list={list} />
 					))}

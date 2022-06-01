@@ -1,21 +1,19 @@
 import { useEffect, useState } from 'react';
-import InfiniteScroll from 'react-infinite-scroll-component';
 
+import useModal from '../../hooks/useModal';
+
+import InfiniteScroll from 'react-infinite-scroll-component';
 import toast, { Toaster } from 'react-hot-toast';
 
 import { Spinner } from '../Spinner';
 import { Empty } from '../Empty';
 import { MovieCard } from '../MovieCard';
+import ModalCreateList from '../ModalCreateList';
 
 // Types
 import { Movie, MoviesData } from '../../interface/ApiMovies';
 
-// Css
-import styles from './MoviesGrid.module.css';
-
 import apiMovies from '../../utils/apiMovies';
-import ModalCreateList from '../ModalCreateList';
-import useModal from '../../hooks/useModal';
 
 export function MoviesGrid({ search }: { search: string }) {
 	const [page, setPage] = useState(1);
@@ -67,7 +65,7 @@ export function MoviesGrid({ search }: { search: string }) {
 				next={() => setPage((prevPage) => prevPage + 1)}
 				loader={<Spinner />}
 			>
-				<ul className={styles.moviesGrid}>
+				<ul className='moviesGrid'>
 					{movies.map((movie) => (
 						<MovieCard
 							key={movie.id}
