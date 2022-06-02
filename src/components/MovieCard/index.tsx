@@ -10,6 +10,7 @@ import { Movie } from '../../interface/ApiMovies';
 
 // Css
 import styles from './MovieCard.module.css';
+import { Button } from 'react-bootstrap';
 
 type Props = {
 	movie: Movie;
@@ -23,7 +24,7 @@ export function MovieCard({ movie, notificationToaster, openModalCreateList }: P
 
 	return (
 		<li className={styles.movieCard}>
-			<Link to={'/movies/' + movie.id}>
+			<Link to={'/movies/' + movie.id} className={styles.movieLink}>
 				<div className={styles.imgBox}>
 					<img width={230} height={345} className={styles.movieImage} src={imageUrl} alt={movie.title} />
 				</div>
@@ -44,7 +45,7 @@ export function MovieCard({ movie, notificationToaster, openModalCreateList }: P
 					)}
 				</div>
 			</Link>
-			<div>{movie.title}</div>
+			<div className='text-center'>{movie.title}</div>
 		</li>
 	);
 }

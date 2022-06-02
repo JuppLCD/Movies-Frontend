@@ -24,4 +24,10 @@ Esta App fue hecha con la finalidad de aprender y comprender mas sobre la creaci
 
 [x] Pagina usuario.
 
-[ ] Pagina lista de peliculas.
+[x] Pagina lista de peliculas.
+
+[x] Crear opcion de eliminar lista (tanto en pagina Profile, List).
+
+[x] Crear opcion de eliminar movie de una lista.
+
+[ ] Crear opcion de cambiar nombre de lista pagina List.

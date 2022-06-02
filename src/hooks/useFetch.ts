@@ -1,18 +1,12 @@
 import { useEffect, useState } from 'react';
 
-import { OptionsFetch } from '../interface/useFetchTypes';
+import { OptionsFetch, useFetchState } from '../interface/useFetchTypes';
 
 type Props = {
 	endpoint: string;
 	uri: string;
 	errMenssage?: string;
 	options: OptionsFetch;
-};
-
-type useFetchState<T> = {
-	state: 'idle' | 'loading' | 'error' | 'success';
-	data: null | T;
-	error: null | Error;
 };
 
 const useFetch = <T>({
