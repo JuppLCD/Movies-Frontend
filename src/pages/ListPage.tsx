@@ -118,7 +118,7 @@ const ListPage = () => {
 							</Button>
 						)}
 					</div>
-					<section className='d-flex justify-content-between'>
+					<section className='d-flex justify-content-between mt-2'>
 						{settings.open ? (
 							<Form
 								onSubmit={(e) => {
@@ -141,7 +141,7 @@ const ListPage = () => {
 							<h1>{settings.name}</h1>
 						)}
 						{settings.open && (
-							<div className='d-flex mx-2'>
+							<div>
 								<Button title='Edit name' className='mx-1'>
 									<FaEdit size={20} />
 								</Button>
