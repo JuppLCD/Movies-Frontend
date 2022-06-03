@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 
+import { useAuth } from '../hooks/useAuth';
+
 import { FaRegSun, FaTimes } from 'react-icons/fa';
 import toast, { Toaster } from 'react-hot-toast';
 import { Button, Container } from 'react-bootstrap';
@@ -22,6 +24,7 @@ type List = {
 
 const ProfilePage = () => {
 	const fetchState = apiBackend<UserMoviesList>(ENDPOINTS.info);
+	const { listUserModificate, listsUser } = useAuth();
 
 	const [lists, setLists] = useState<List[]>([]);
 	const [settings, setSettings] = useState(false);
@@ -47,6 +50,7 @@ const ProfilePage = () => {
 		if ((data as { ok: true })?.ok) {
 			notificationToaster('Se a eliminado la lista de reproduccion correctamente', 'success');
 			setLists((prevState) => prevState.filter((list) => String(list.id) !== String(listId)));
+			listUserModificate();
 		}
 	};
 	return (

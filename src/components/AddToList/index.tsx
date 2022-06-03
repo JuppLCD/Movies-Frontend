@@ -20,7 +20,7 @@ type Props = {
 };
 
 const AddToList = ({ idMovie, openModalCreateList, notificationToaster, drop = 'down' }: Props) => {
-	const { listsUser } = useAuth();
+	const { listsUser, listUserModificate } = useAuth();
 
 	function stopPropagation(
 		e: React.MouseEvent<HTMLButtonElement>,
@@ -73,14 +73,16 @@ const AddToList = ({ idMovie, openModalCreateList, notificationToaster, drop = '
 	const lists = listsUser.lists.filter((list) => list.name !== 'Likes');
 	return (
 		<div className='d-flex justify-content-around mt-5'>
-			<Button
-				title='Like'
-				data-list-button='Like'
-				data-list-id={(listLike as { name: string; id: number }).id}
-				onClick={(e: React.MouseEvent<HTMLButtonElement>) => stopPropagation(e, addToList)}
-			>
-				<FaHeart className='text-ligth' size={20} />
-			</Button>
+			{listLike?.id && (
+				<Button
+					title='Like'
+					data-list-button='Like'
+					data-list-id={(listLike as { name: string; id: number }).id}
+					onClick={(e: React.MouseEvent<HTMLButtonElement>) => stopPropagation(e, addToList)}
+				>
+					<FaHeart className='text-ligth' size={20} />
+				</Button>
+			)}
 
 			<Dropdown
 				onClick={(e: React.MouseEvent<HTMLButtonElement>) => stopPropagation(e, addToList)}

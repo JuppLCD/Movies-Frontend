@@ -6,6 +6,7 @@ import { FaEdit, FaRegSun, FaRegTrashAlt, FaTimes } from 'react-icons/fa';
 import { Button, Container, Form } from 'react-bootstrap';
 
 import useModal from '../hooks/useModal';
+import { useAuth } from '../hooks/useAuth';
 
 import { Spinner } from '../components/Spinner';
 import ModalCreateList from '../components/ModalCreateList';
@@ -20,14 +21,15 @@ import apiBackend from '../utils/apiBackend';
 import { insertListIdEndpoint } from '../utils/insertListIdEndpoint';
 import fetchList from '../utils/fetchList';
 
-type SettingsPage = { open: boolean; name: string };
+type SettingsPage = { open: boolean; name: string; editName: boolean };
 
 const ListPage = () => {
 	const navegate = useNavigate();
 	const [movies, setMovies] = useState<Movie[]>([]);
-	const [settings, setSettings] = useState<SettingsPage>({ open: false, name: '' });
+	const [settings, setSettings] = useState<SettingsPage>({ open: false, name: '', editName: false });
 	const { listId } = useParams();
 
+	const { listUserModificate } = useAuth();
 	const { show, handleClose, handleShow } = useModal();
 	const fetchState = apiBackend<UserMoviesList>(insertListIdEndpoint(ENDPOINTS.getMoviesFromList, listId as string));
 
@@ -79,6 +81,7 @@ const ListPage = () => {
 			if ((data as { ok: true })?.ok) {
 				notificationToaster('Se a eliminado la lista de reproduccion correctamente', 'success');
 				navegate('/profile', { replace: true });
+				listUserModificate();
 			}
 		};
 
@@ -98,6 +101,7 @@ const ListPage = () => {
 			const data = await fetchList(ENDPOINTS.updateList + String(listId), { name: settings.name });
 			if ((data as { ok: true })?.ok) {
 				notificationToaster('Se a cambiado el nombre correctamente', 'success');
+				listUserModificate();
 			}
 		};
 
@@ -119,7 +123,7 @@ const ListPage = () => {
 						)}
 					</div>
 					<section className='d-flex justify-content-between mt-2'>
-						{settings.open ? (
+						{settings.editName ? (
 							<Form
 								onSubmit={(e) => {
 									e.preventDefault();
@@ -142,7 +146,13 @@ const ListPage = () => {
 						)}
 						{settings.open && (
 							<div>
-								<Button title='Edit name' className='mx-1'>
+								<Button
+									title='Edit name'
+									className='mx-1'
+									onClick={() => {
+										setSettings((prevState) => ({ ...prevState, editName: !prevState.editName }));
+									}}
+								>
 									<FaEdit size={20} />
 								</Button>
 								<Button title='Delete List' onClick={deleteList}>

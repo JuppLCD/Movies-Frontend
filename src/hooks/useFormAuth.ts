@@ -6,7 +6,7 @@ import { useAuth } from './useAuth';
 import { DataErrorBackend, ErrorFormDataUser, FormDataUser } from '../interface/ApiBackend';
 
 const Initial_Error = { FormError: '', backend: '' };
-const Initial_Form = { name: 'user2', password: '123', passwordConfirm: '' };
+const Initial_Form = { name: '', password: '', passwordConfirm: '' };
 
 const useFormAuth = (FormOf: 'login' | 'singup') => {
 	const [formData, setFormData] = useState<FormDataUser>(Initial_Form);
