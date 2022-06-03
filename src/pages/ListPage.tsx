@@ -3,7 +3,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 import toast, { Toaster } from 'react-hot-toast';
 import { FaEdit, FaRegSun, FaRegTrashAlt, FaTimes } from 'react-icons/fa';
-import { Button, Container } from 'react-bootstrap';
+import { Button, Container, Form } from 'react-bootstrap';
 
 import useModal from '../hooks/useModal';
 
@@ -20,16 +20,20 @@ import apiBackend from '../utils/apiBackend';
 import { insertListIdEndpoint } from '../utils/insertListIdEndpoint';
 import fetchList from '../utils/fetchList';
 
+type SettingsPage = { open: boolean; name: string };
+
 const ListPage = () => {
 	const navegate = useNavigate();
 	const [movies, setMovies] = useState<Movie[]>([]);
-	const [settings, setSettings] = useState(false);
+	const [settings, setSettings] = useState<SettingsPage>({ open: false, name: '' });
 	const { listId } = useParams();
-	const hookModalAddToList = useModal();
+
+	const { show, handleClose, handleShow } = useModal();
 	const fetchState = apiBackend<UserMoviesList>(insertListIdEndpoint(ENDPOINTS.getMoviesFromList, listId as string));
 
 	useEffect(() => {
 		if (fetchState.state === 'success' && fetchState.data !== null) {
+			setSettings((prevState) => ({ ...prevState, name: (fetchState.data as UserMoviesList).lists[0].name }));
 			Promise.allSettled(
 				fetchState.data?.lists[0].movies.map((movieId) => {
 					return fetch(API_MOVIES + `/movie/${movieId}`, {
@@ -63,11 +67,11 @@ const ListPage = () => {
 		return <p>{fetchState.error?.message}</p>;
 	}
 
-	if (fetchState.data) {
+	if (fetchState.data !== null) {
 		const notificationToaster = (msg: string, type: 'success' | 'error') => toast[type](msg);
 
 		const openModalCreateList = (idMovie: string | number) => {
-			hookModalAddToList.handleShow(String(idMovie));
+			handleShow(String(idMovie));
 		};
 
 		const deleteList = async () => {
@@ -90,23 +94,53 @@ const ListPage = () => {
 			}
 		};
 
+		const renameList = async () => {
+			const data = await fetchList(ENDPOINTS.updateList + String(listId), { name: settings.name });
+			if ((data as { ok: true })?.ok) {
+				notificationToaster('Se a cambiado el nombre correctamente', 'success');
+			}
+		};
+
 		return (
 			<main className='py-2'>
 				<Container fluid='md'>
 					<div>
-						{settings ? (
-							<Button title='Close Settings' onClick={() => setSettings(false)}>
+						{settings.open ? (
+							<Button
+								title='Close Settings'
+								onClick={() => setSettings((prevState) => ({ ...prevState, open: false }))}
+							>
 								<FaTimes size={20} />
 							</Button>
 						) : (
-							<Button title='Open Settings' onClick={() => setSettings(true)}>
+							<Button title='Open Settings' onClick={() => setSettings((prevState) => ({ ...prevState, open: true }))}>
 								<FaRegSun size={20} />
 							</Button>
 						)}
 					</div>
 					<section className='d-flex justify-content-between'>
-						<h1>{fetchState.data.lists[0].name}</h1>
-						{settings && (
+						{settings.open ? (
+							<Form
+								onSubmit={(e) => {
+									e.preventDefault();
+								}}
+							>
+								<Form.Control
+									type='text'
+									name='name'
+									value={settings.name}
+									onChange={(e) => {
+										setSettings((prevState) => ({ ...prevState, name: e.target.value }));
+									}}
+								/>
+								<Button type='submit' onClick={renameList}>
+									Save
+								</Button>
+							</Form>
+						) : (
+							<h1>{settings.name}</h1>
+						)}
+						{settings.open && (
 							<div className='d-flex mx-2'>
 								<Button title='Edit name' className='mx-1'>
 									<FaEdit size={20} />
@@ -124,17 +158,13 @@ const ListPage = () => {
 								movie={movie}
 								notificationToaster={notificationToaster}
 								openModalCreateList={openModalCreateList}
-								settings={settings}
+								settings={settings.open}
 								removeMovie={removeMovie}
 							/>
 						))}
 					</ul>
 					<Toaster />
-					<ModalCreateList
-						show={hookModalAddToList.show}
-						handleClose={hookModalAddToList.handleClose}
-						notificationToaster={notificationToaster}
-					/>
+					<ModalCreateList show={show} handleClose={handleClose} notificationToaster={notificationToaster} />
 				</Container>
 			</main>
 		);
