@@ -10,7 +10,7 @@ import { DataErrorBackend } from '../../interface/ApiBackend';
 import fetchList from '../../utils/fetchList';
 import { insertListIdEndpoint } from '../../utils/insertListIdEndpoint';
 
-import styles from './AddtoList.module.css';
+import styles from './AddToList.module.css';
 
 type Props = {
 	idMovie: string | number;
