@@ -1,5 +1,7 @@
 # Web App - Movies
 
+URL_DEPLOY = https://movies-jupplcd.netlify.app/
+
 Esta App fue hecha con la finalidad de aprender y comprender mas sobre la creacion de SPA con React JS. **Esta basada en una lista de reproduccion de youtube**, en la cual busca enseñar react al construir una simple app de peliculas, del cual procedo a dejar el [link aqui](https://www.youtube.com/playlist?list=PL9T-KKyKXNClsgm8o1mKQH7Wc2fNqUOOF). [Codigo original de Yoelvis Mulen { code }](https://github.com/ymulenll/movies-curso-react/tree/master). [Su cuenta de Youtube](https://www.youtube.com/channel/UCp28AG2NaDuzyVaAT--2NGQ).
 
 – – –

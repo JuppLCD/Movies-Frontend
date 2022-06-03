@@ -20,7 +20,7 @@ type Props = {
 };
 
 const AddToList = ({ idMovie, openModalCreateList, notificationToaster, drop = 'down' }: Props) => {
-	const { listsUser, listUserModificate } = useAuth();
+	const { listsUser } = useAuth();
 
 	function stopPropagation(
 		e: React.MouseEvent<HTMLButtonElement>,
